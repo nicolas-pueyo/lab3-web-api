@@ -1,6 +1,9 @@
 package es.unizar.webeng.lab3
 
 import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
+import io.mockk.justRun
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -12,11 +15,7 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
-import io.mockk.every
-import io.mockk.verify
 import java.util.Optional
-import io.mockk.justRun
-
 
 private val MANAGER_REQUEST_BODY = { name: String ->
     """
@@ -99,7 +98,7 @@ class ControllerTests {
             employeeRepository.findById(2)
         } answers {
             Optional.empty()
-        } 
+        }
         mvc.get("/employees/1").andExpect {
             status { isOk() }
             content {
@@ -173,11 +172,11 @@ class ControllerTests {
                     json(MANAGER_RESPONSE_BODY("Tom", 1))
                 }
             }
-        
+
         verify(exactly = 2) {
             employeeRepository.findById(1)
         }
-        
+
         verify(exactly = 2) {
             employeeRepository.save(any<Employee>())
         }
